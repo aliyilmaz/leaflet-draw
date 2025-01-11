@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="author" content="aliyilmaz">
+  <meta name="description" content="leaflet draw export to geojson file">
+
+  <link rel="icon" type="image/x-icon" href="assets/img/favicon.png">
+
+  <title>Leaflet Draw</title>
+  <link rel="stylesheet" href="assets/lib/leaflet/leaflet.css"/>
+  <link rel="stylesheet" href="assets/css/app.css">
+</head>
+<body>
+  <div id="container">
+    <div id="map"></div>
+  </div>
+  <script src="assets/lib/leaflet/leaflet.js"></script>
+
+  <script src="assets/lib/Leaflet.draw-develop/src/Leaflet.draw.js"></script>
+  <script src="assets/lib/Leaflet.draw-develop/src/Leaflet.Draw.Event.js"></script>
+  <link rel="stylesheet" href="assets/lib/Leaflet.draw-develop/src/leaflet.draw.css"/>
+
+  <script src="assets/lib/Leaflet.draw-develop/src/Toolbar.js"></script>
+  <script src="assets/lib/Leaflet.draw-develop/src/Tooltip.js"></script>
+
+  <script src="assets/lib/Leaflet.draw-develop/src/ext/GeometryUtil.js"></script>
+  <script src="assets/lib/Leaflet.draw-develop/src/ext/LatLngUtil.js"></script>
+  <script src="assets/lib/Leaflet.draw-develop/src/ext/LineUtil.Intersect.js"></script>
+  <script src="assets/lib/Leaflet.draw-develop/src/ext/Polygon.Intersect.js"></script>
+  <script src="assets/lib/Leaflet.draw-develop/src/ext/Polyline.Intersect.js"></script>
+  <script src="assets/lib/Leaflet.draw-develop/src/ext/TouchEvents.js"></script>
+
+  <script src="assets/lib/Leaflet.draw-develop/src/draw/DrawToolbar.js"></script>
+  <script src="assets/lib/Leaflet.draw-develop/src/draw/handler/Draw.Feature.js"></script>
+  <script src="assets/lib/Leaflet.draw-develop/src/draw/handler/Draw.SimpleShape.js"></script>
+  <script src="assets/lib/Leaflet.draw-develop/src/draw/handler/Draw.Polyline.js"></script>
+  <script src="assets/lib/Leaflet.draw-develop/src/draw/handler/Draw.Marker.js"></script>
+  <script src="assets/lib/Leaflet.draw-develop/src/draw/handler/Draw.Circle.js"></script>
+  <script src="assets/lib/Leaflet.draw-develop/src/draw/handler/Draw.CircleMarker.js"></script>  
+  <script src="assets/lib/Leaflet.draw-develop/src/draw/handler/Draw.Polygon.js"></script>
+  <script src="assets/lib/Leaflet.draw-develop/src/draw/handler/Draw.Rectangle.js"></script>
+
+  <script src="assets/lib/Leaflet.draw-develop/src/edit/EditToolbar.js"></script>
+  <script src="assets/lib/Leaflet.draw-develop/src/edit/handler/EditToolbar.Edit.js"></script>
+  <script src="assets/lib/Leaflet.draw-develop/src/edit/handler/EditToolbar.Delete.js"></script>
+
+  <script src="assets/lib/Leaflet.draw-develop/src/Control.Draw.js"></script>
+
+  <script src="assets/lib/Leaflet.draw-develop/src/edit/handler/Edit.Poly.js"></script>
+  <script src="assets/lib/Leaflet.draw-develop/src/edit/handler/Edit.SimpleShape.js"></script>
+  <script src="assets/lib/Leaflet.draw-develop/src/edit/handler/Edit.Rectangle.js"></script>
+  <script src="assets/lib/Leaflet.draw-develop/src/edit/handler/Edit.Marker.js"></script>
+  <script src="assets/lib/Leaflet.draw-develop/src/edit/handler/Edit.CircleMarker.js"></script>
+  <script src="assets/lib/Leaflet.draw-develop/src/edit/handler/Edit.Circle.js"></script>
+
+  <script src="assets/js/app.js"></script>
+
+<script>
+  
+    
+    var map = L.map('map', {zoomControl: false,worldCopyJump: true}).setView([40.908263,29.056295], 19);    
+    var osm = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+      attribution: '<a href="https://github.com/aliyilmaz/leaflet-draw">Project page</a>'
+    }).addTo(map);
+
+    const shapeoption = {
+      color: '#45b165',
+      fillColor: '#3ebf37',
+      fillOpacity: 0.4,
+      weight: 2
+    };
+    let options = {
+      position:'topleft',
+      // draw:{
+        // circle:false,
+        // circlemarker:false,
+        // polygon: false,
+        // marker: false,
+        // rectangle: false,
+        // polyline:false
+      // },
+      draw: {
+        circle:{          
+          shapeOptions: shapeoption,
+          repeatMode: false
+        },
+        circlemarker:{                  
+          color: '#3ebf37',    
+          weight: 12,        
+          fillOpacity: 1,  
+          repeatMode: true
+        },        
+        polygon: {     
+          shapeOptions: shapeoption,
+          metric: true,
+          showLength: true,
+          guidelineDistance:15
+        },
+        marker: {
+          repeatMode: true
+        },
+        rectangle: {          
+          shapeOptions: shapeoption,          
+          repeatMode: false        
+        },
+        polyline: {          
+          shapeOptions: {
+              color: '#3ebf37',
+              weight: 2              
+          },          
+          guidelineDistance:15,
+          repeatMode: false        
+        }
+        
+        
+      },
+      local:{
+        draw: {
+          toolbar: {
+            actions: {
+              title: 'Çizimi İptal Et',
+              text: 'İptal'
+            },
+            finish: {
+              title: 'Çizimi Tamamla',
+              text: 'Tamamla'
+            },
+            undo: {
+              title: 'Son Adımı Geri Al',
+              text: 'Geri Al'
+            },
+            buttons: {
+              polyline: 'Çizgi Çiz',
+              polygon: 'Çokgen Çiz',
+              rectangle: 'Dikdörtgen Çiz',
+              circle: 'Daire Çiz',
+              marker: 'Nokta İşaretle',
+              circlemarker: 'Daire İşaretle'
+            }
+          },
+          handlers: {
+            circle: {
+              tooltip: {
+                start: 'Çizim için tıklayın.'
+              },
+              radius: 'Yarıçap'
+            },
+            circlemarker: {
+              tooltip: {
+                start: 'İşaretleme için tıklayın.'
+              }
+            },
+            marker: {
+              tooltip: {
+                start: 'İşaretlemek için tıklayın.'
+              }
+            },
+            polygon: {
+              tooltip: {
+                start: 'Çizime başlamak için tıklayın.',
+                cont: 'Devam etmek için tıklayın.',
+                end: 'Bitirmek için son noktaya tıklayın.'
+              }
+            },
+            polyline: {
+              error: '<strong>Hata:</strong> şekil kenarları kesişemez!',
+              tooltip: {
+                start: 'Çizgi çizmeye başlamak için tıklayın.',
+                cont: 'Çizmeye devam etmek için tıklayın.',
+                end: 'Çizimi bitirmek için son noktaya tıklayın.'
+              }
+            },
+            rectangle: {
+              tooltip: {
+                start: 'Dikdörtgen çizmek için tıklayın.'
+              }
+            },
+            simpleshape: {
+              tooltip: {
+                end: 'Çizimi bitirmek için fareyi bırakın.'
+              }
+            }
+          }
+        },
+        edit: {
+          toolbar: {
+            actions: {
+              save: {
+                title: 'Değişiklikleri Kaydet',
+                text: 'Kaydet'
+              },
+              cancel: {
+                title: 'Düzenlemeleri İptal Et, Tüm Değişiklikleri İptal Et',
+                text: 'İptal'
+              },
+              clearAll: {
+                title: 'Tüm Katmanları Temizle',
+                text: 'Hepsini Temizle'
+              }
+            },
+            buttons: {
+              edit: 'Katmanları Düzenle',
+              editDisabled: 'Düzenlenecek Katman Yok',
+              remove: 'Katmanları Sil',
+              removeDisabled: 'Silinecek Katman Yok'
+            }
+          },
+          handlers: {
+            edit: {
+              tooltip: {
+                text: 'Özellikleri düzenlemek için tutmaçları veya işaretçileri sürükleyin.',
+                subtext: 'Değişiklikleri geri almak için iptale tıklayın.'
+              }
+            },
+            remove: {
+              tooltip: {
+                text: 'Bir özelliği kaldırmak için üzerine tıklayın.'
+              }
+            }
+          }
+        }        
+      },
+      
+      export: {
+        button: {
+          status: true,
+          text: "İndir",
+          title: "GEOJSON dosyasını indir",
+          svgicon: "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 384 512'><path d='M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm97 289c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0L79 303c-9.4 9.4-9.4 24.6 0 33.9l48 48c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-31-31 31-31zM257 255c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9l31 31-31 31c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l48-48c9.4-9.4 9.4-24.6 0-33.9l-48-48z'/></svg>"
+        }
+      },
+      import: {
+        button: {
+          status: true,
+          text: "Yükle",
+          title: "GEOJSON dosyasını yükle",
+          svgicon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><path d="M64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-288-128 0c-17.7 0-32-14.3-32-32L224 0 64 0zM256 0l0 128 128 0L256 0zM216 408c0 13.3-10.7 24-24 24s-24-10.7-24-24l0-102.1-31 31c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l72-72c9.4-9.4 24.6-9.4 33.9 0l72 72c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0l-31-31L216 408z"/></svg>'
+        }
+      }
+
+    };
+
+    var drawMapPlugin = L.drawMapPlugin(options);
+    drawMapPlugin.addTo(map);    
+
+  </script>
+
+</body>
+</html>

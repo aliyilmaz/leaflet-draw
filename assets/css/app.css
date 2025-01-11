@@ -1,0 +1,136 @@
+html, body, #container {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  padding: 0;
+  margin: 0;
+}
+#map {
+  width: 100%;
+  height: 100%;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+
+.export_infobox {
+  padding: 6px 8px;
+  font: 12px/14px Arial, Helvetica, sans-serif;
+  color: white;
+  background: #dc3545;
+  box-shadow: 0 0 15px #dc3545;
+  border-radius: 5px;
+  text-align: left;
+  line-height: 16px;
+  letter-spacing: 0.8px;
+}
+.import_infobox {
+  padding: 6px 8px;
+  font: 12px/14px Arial, Helvetica, sans-serif;
+  color: white;
+  background: #2b6cb6;
+  box-shadow: 0 0 15px #2679d8;
+  border-radius: 5px;
+  text-align: left;
+  line-height: 16px;
+  letter-spacing: 0.8px;
+}
+#geojson-import {
+  display: block;
+  width: auto;
+  height: 18px;
+  font-size: 12px;
+  text-decoration: none;
+  padding: 8px;
+  color: #fff;
+  background-color: #2b6cb6;
+  border-color: #2679d8;
+  border-radius: 6px;
+}
+#geojson-import:hover {
+  color: #fff;
+  background-color: #1f5ea7;
+  border-color: #1f70cc;
+}
+#geojson-import > svg {  
+  float: right;
+  margin-left: 8px;
+  width: 14px;
+  fill: #fff;
+}
+#geojson-export {
+  display: block;
+  width: auto;
+  height: 18px;
+  font-size: 12px;
+  text-decoration: none;
+  padding: 8px;
+  color: #fff;
+  background-color: #dc3545;
+  border-color: #dc3545;
+  border-radius: 6px;
+}
+#geojson-export:hover {
+  color: #fff;
+  background-color: #c82333;
+  border-color: #bd2130;
+}
+#geojson-export > svg {  
+  float: right;
+  margin-left: 8px;
+  width: 14px;
+  fill: #fff;
+}
+div.leaflet-div-icon{
+  width: 18px !important;
+  height: 18px !important;
+  background-color: #3ebf37;
+  /* border: 4px solid #79b48b; */
+  border-radius: 15px;
+}
+
+.shape-edge-label {
+  color: #030000;
+  background: rgb(205 217 160 / 85%) !important;
+  border: 1px solid rgb(97, 96, 88) !important;
+  padding: 2px !important;
+  border-radius: 3px !important;
+  font-size: 12px !important;
+  width: max-content !important; /* genişliği otomatik ayarla */
+  height: max-content !important; /* yüksekliği otomatik ayarla */
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+}
+
+.shape-angle-label {
+  color: #030000;
+  background: rgb(233 233 228 / 81%) !important;
+  border: 1px solid rgb(97, 96, 88) !important;
+  padding: 6pt !important;
+  border-radius: 50% 50% 50% 50% !important;
+  font-size: 9px !important;
+  width: 24px !important;
+  height: 24px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  transform: translate(-50%, -50%) rotate(45deg);
+  opacity: 0.8;
+}
+.dotted-line {
+  stroke: #bbb5b5;
+  stroke-dasharray: 5, 5; /* Nokta nokta çizgi */
+  opacity: 0.5; /* Silik */
+}
+
+.dotted-line-label {
+  background: rgba(209, 208, 208, 0.664); /* Hafif şeffaf arka plan */
+  border: 1px dotted rgb(167, 164, 164); /* Nokta nokta kenarlık */
+  padding: 2px;
+  border-radius: 3px;
+  font-size: 12px;
+  width: max-content !important;
+  height: max-content !important;
+  opacity: 0.5;
+}
